@@ -3,17 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>base</artifactId>
+        <artifactId>springboot</artifactId>
         <groupId>my</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>springboot</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>configcenter</module>
-    </modules>
+    <artifactId>configcenter</artifactId>
 
 
 </project>

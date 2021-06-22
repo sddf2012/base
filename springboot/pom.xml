@@ -12,7 +12,7 @@
     <artifactId>springboot</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>configcenter</module>
+        <module>registercenter</module>
     </modules>
 
 

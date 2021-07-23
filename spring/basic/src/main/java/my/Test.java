@@ -3,7 +3,6 @@ package my;
 import my.config.AnnotationConfiguration;
 import my.service.ClubService;
 import my.service.TestService2;
-import my.service.impl.ClubServiceImpl;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**

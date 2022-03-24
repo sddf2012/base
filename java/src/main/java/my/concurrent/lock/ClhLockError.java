@@ -25,15 +25,14 @@ public class ClhLockError {
             return prev == null || !prev.isLock;
         }
 
-        private boolean lock() {
+        private void lock() {
             //System.out.println(name + " lock value before:" + lock.get());
-            isLock = lock.compareAndSet(0, 1);
+            isLock=true;
             //System.out.println(name + " lock value after:" + lock.get());
-            return isLock;
         }
 
         private void unLock() {
-            isLock = !lock.compareAndSet(1, 0);
+            isLock = false;
         }
 
         @Override
@@ -41,8 +40,6 @@ public class ClhLockError {
             return name + ",prev:" + (prev == null ? "null" : prev.name) + ",next:" + (next == null ? "null" : next.name);
         }
     }
-
-    private AtomicInteger lock = new AtomicInteger(0);
 
     private AtomicReference<Node> tailReference = new AtomicReference<>();
 
@@ -102,17 +99,13 @@ public class ClhLockError {
         ClhLockError clhLock = new ClhLockError();
 
         for (int i = 0; i < 10; i++) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        clhLock.lock();
-                        System.out.println(Thread.currentThread().getName() + "获取了锁!");
-                    } finally {
-                        clhLock.unlock();
-                        //System.out.println(Thread.currentThread().getName() + "释放了锁!");
+            Thread thread = new Thread(() -> {
+                try {
+                    clhLock.lock();
+                    System.out.println(Thread.currentThread().getName() + "获取了锁!");
+                } finally {
+                    clhLock.unlock();
 
-                    }
                 }
             });
             thread.start();

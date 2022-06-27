@@ -1,5 +1,6 @@
 package my.bean.initialize;
 
+import my.bean.instantiation.MyInstantiationPostProcessor;
 import my.domain.factory.CatFactory;
 import my.domain.factory.DefaultCatFactory;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
@@ -25,5 +26,10 @@ public class BeanInitializationDemo {
     @Bean(initMethod = "customizedInit", destroyMethod = "customizedDestroy")
     public CatFactory catFactory() {
         return new DefaultCatFactory();
+    }
+
+    @Bean
+    public MyInstantiationPostProcessor postProcessor(){
+        return new MyInstantiationPostProcessor();
     }
 }

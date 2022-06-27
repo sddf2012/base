@@ -1,5 +1,7 @@
 package my.basicdemo;
 
+import my.domain.Cat;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,4 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("my.basicdemo")
 public class BasicDemoConfig {
+    @Bean
+    public Cat cat() {
+        return new Cat();
+    }
 }

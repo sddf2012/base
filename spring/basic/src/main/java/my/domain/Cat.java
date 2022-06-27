@@ -12,7 +12,22 @@ public class Cat {
 
     public int age;
 
+    public Cat() {
+    }
+
+    public Cat(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
     public void print(){
-        System.out.println("cat");
+        System.out.println(this.toString());
+    }
+
+    public static Cat createCat() {
+        Cat cat = new Cat();
+        cat.setName("maomi");
+        cat.setAge(2);
+        return cat;
     }
 }

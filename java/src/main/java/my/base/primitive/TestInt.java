@@ -22,5 +22,9 @@ public class TestInt {
         System.out.println(g==(a+b));
         System.out.println(g.equals(a+b));
         System.out.println(g.equals(a+h));
+
+        int i=1000;
+        int i2=1000;
+        System.out.println(i==i2);
     }
 }

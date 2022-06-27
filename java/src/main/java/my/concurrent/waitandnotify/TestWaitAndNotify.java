@@ -1,7 +1,6 @@
 package my.concurrent.waitandnotify;
 
 import lombok.SneakyThrows;
-import org.omg.PortableServer.THREAD_POLICY_ID;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Queue;

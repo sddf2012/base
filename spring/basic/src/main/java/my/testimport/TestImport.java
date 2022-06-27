@@ -16,6 +16,7 @@ public class TestImport {
         Cat cat = ac.getBean(Cat.class);
         Dog dog = ac.getBean(Dog.class);
         //Dog dog = (Dog)ac.getBean("dog");
+        //CatSelector catSelector = ac.getBean(CatSelector.class);
         cat.print();
         dog.print();
     }

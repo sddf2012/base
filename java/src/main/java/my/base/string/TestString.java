@@ -73,7 +73,7 @@ public class TestString {
 
 
         //创建了3个对象，堆中ab，常量池中a,b.  为何堆中无a? 猜测：根据最上面的例子，如果没有具体的引用指向该实例，不会在堆中创建对象
-        /*String s=new String("a")+"b";
+        String s=new String("a")+"b";
         //常量池中已经存在，不会再创建b
         String s2="b";
         //常量池中已经存在，不会再创建a
@@ -81,7 +81,7 @@ public class TestString {
         //常量池中创建ab
         String s1="ab";
         //false
-        System.out.println(s==s1);*/
+        System.out.println(s==s1);
 
 
         //创建1个堆对象ab；两个常量池对象a，b
@@ -98,14 +98,14 @@ public class TestString {
 
 
 
-        String s="a";
+        /*String s="a";
         String s1="b";
         //堆中创建ab
         String s2=s+s1;
         //常量池中创建ab
         String s3="ab";
         //false
-        System.out.println(s2==s3);
+        System.out.println(s2==s3);*/
     }
 
     public static void m1(){

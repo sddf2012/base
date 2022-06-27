@@ -10,7 +10,7 @@ import org.springframework.core.type.AnnotationMetadata;
  */
 public class CatSelector implements ImportSelector {
     @Override
-    public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+    public String[] selectImports(AnnotationMetadata icm) {
         return new String[]{Cat.class.getName()};
     }
 }

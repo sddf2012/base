@@ -7,6 +7,7 @@
         <module>spring</module>
         <module>springboot</module>
         <module>java</module>
+        <module>servlet</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

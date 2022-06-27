@@ -1,0 +1,5 @@
+jasypt:
+  encryptor:
+    password: lybgeek
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator

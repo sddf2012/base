@@ -9,8 +9,8 @@ import org.springframework.beans.factory.FactoryBean;
  */
 public class CatFactoryBean implements FactoryBean<Cat> {
     @Override
-    public Cat getObject() throws Exception {
-        return new Cat();
+    public Cat getObject() {
+        return new Cat("tom", 1);
     }
 
     @Override

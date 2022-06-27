@@ -17,9 +17,7 @@ public class ServiceLoaderDemo {
         for (CatFactory catFactory : serviceLoader) {
             System.out.println(catFactory.createCat());
         }
-
         //jdkServiceLoader();
-
     }
 
     public static void jdkServiceLoader() {

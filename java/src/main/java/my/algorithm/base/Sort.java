@@ -1,7 +1,11 @@
 package my.algorithm.base;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * https://www.cnblogs.com/onepixel/articles/7674659.html
@@ -11,11 +15,12 @@ import java.util.Random;
  */
 public class Sort {
     public static void main(String[] args) {
-        int order = 0;
+        int order = 1;
         int[] input = randomArray(10, 40);
         System.out.println(Arrays.toString(input));
-        int[] output = selectionSort(order, input);
+        int[] output = simpleInsertionSort(order, input);
         System.out.println(Arrays.toString(output));
+        elementConsistent(input, output);
         isOrderly(order, output);
     }
 
@@ -46,6 +51,14 @@ public class Sort {
             }
         }
         System.out.println(isOrderly ? "有序的" : "无序的");
+    }
+
+    public static void elementConsistent(int[] a, int[] b) {
+        List<Integer> al = Arrays.stream(a).boxed().collect(Collectors.toList());
+        for (int i : b) {
+            al.remove((Object) i);
+        }
+        System.out.println(al.size() == 0 && a.length == b.length ? "元素一致" : "元素不一致");
     }
 
     /**
@@ -118,21 +131,38 @@ public class Sort {
 
     /**
      * 简单插入排序
+     *
      * @param order
      * @param input
      * @return
      */
-    public static int[] simpleInsertionSort(int order, int[] input){
-
+    public static int[] simpleInsertionSort(int order, int[] input) {
+        int current;
         for (int i = 0; i < input.length; i++) {
-
+            current = input[i];
+            int j = i - 1;
+            while (j >= 0 && (order == 0 ? current < input[j] : current > input[j])) {
+                input[j + 1] = input[j];
+                j--;
+            }
+            input[j + 1] = current;
         }
-
-
         return input;
     }
 
-
+    public static int[] binaryInsertionSort(int order, int[] input) {
+        int current;
+        for (int i = 0; i < input.length; i++) {
+            current = input[i];
+            int j = i/2;
+            while (j >= 0 && current < input[j]) {
+                input[j + 1] = input[j];
+                j=j/2;
+            }
+            input[j + 1] = current;
+        }
+        return input;
+    }
 
 
 }

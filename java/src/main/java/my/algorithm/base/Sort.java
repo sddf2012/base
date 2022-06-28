@@ -18,7 +18,7 @@ public class Sort {
         int order = 1;
         int[] input = randomArray(10, 40);
         System.out.println(Arrays.toString(input));
-        int[] output = simpleInsertionSort(order, input);
+        int[] output = binaryInsertionSort(order, Arrays.copyOf(input, input.length));
         System.out.println(Arrays.toString(output));
         elementConsistent(input, output);
         isOrderly(order, output);
@@ -152,20 +152,33 @@ public class Sort {
 
     public static int[] binaryInsertionSort(int order, int[] input) {
         int current;
+        int low;
+        int high;
+        int half;
         for (int i = 0; i < input.length; i++) {
             current = input[i];
-            int j = 0;
-            int half=(i-j)/2;
-            while (j != (i - j) / 2) {
-                if(current>input[half]){
-
-                }else{
-
+            low = 0;
+            high = i - 1;
+            while (low <= high) {
+                half = low + (high - low) / 2;
+                if (order == 0) {
+                    if (current >= input[half]) {
+                        low = half + 1;
+                    } else {
+                        high = half - 1;
+                    }
+                } else {
+                    if (current <= input[half]) {
+                        low = half + 1;
+                    } else {
+                        high = half - 1;
+                    }
                 }
-                input[j + 1] = input[j];
-                j = j / 2;
             }
-            input[j + 1] = current;
+            for (int j = i; j > low; j--) {
+                input[j] = input[j - 1];
+            }
+            input[low] = current;
         }
         return input;
     }

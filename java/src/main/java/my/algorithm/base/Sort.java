@@ -154,10 +154,16 @@ public class Sort {
         int current;
         for (int i = 0; i < input.length; i++) {
             current = input[i];
-            int j = i/2;
-            while (j >= 0 && current < input[j]) {
+            int j = 0;
+            int half=(i-j)/2;
+            while (j != (i - j) / 2) {
+                if(current>input[half]){
+
+                }else{
+
+                }
                 input[j + 1] = input[j];
-                j=j/2;
+                j = j / 2;
             }
             input[j + 1] = current;
         }

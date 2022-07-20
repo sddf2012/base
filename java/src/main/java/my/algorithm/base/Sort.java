@@ -95,6 +95,22 @@ public class Sort {
         return input;
     }
 
+
+
+    public static int[] quickSort(int order, int[] input) {
+
+
+
+
+
+        return input;
+    }
+
+
+
+
+
+
     /**
      * 选择排序
      *

@@ -9,7 +9,7 @@ package my.functional;
  * date: 2020/6/2 16:23
  */
 @FunctionalInterface
-public interface Animal {
+public interface FunctionDemo {
 
     String getName();
 

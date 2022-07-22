@@ -1,5 +1,9 @@
 package my.webservice.service;
 
+
+import my.domain.Cat;
+
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 /**
@@ -8,4 +12,6 @@ import javax.jws.WebService;
  */
 @WebService
 public interface AnimalService {
+    @WebMethod
+    Cat getCat(String id);
 }

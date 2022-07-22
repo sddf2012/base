@@ -1,10 +1,5 @@
 package my.other;
 
-import my.base.Cat;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author liu peng bo
  * @date 2022-7-6 10:45

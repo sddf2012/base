@@ -6,7 +6,7 @@ package my.functional;
  */
 public class Test {
     public static void main(String[] args) {
-        Animal cat = () -> "cat";
+        FunctionDemo cat = () -> "cat";
         System.out.println(cat.getName());
     }
 }

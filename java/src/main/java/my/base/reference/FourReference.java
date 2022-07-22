@@ -1,7 +1,7 @@
 package my.base.reference;
 
 import lombok.ToString;
-import my.base.Cat;
+import my.domain.Cat;
 
 import java.lang.ref.*;
 

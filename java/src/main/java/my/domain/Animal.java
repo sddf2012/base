@@ -5,4 +5,5 @@ package my.domain;
  * @date 2022-7-21 13:35
  */
 public interface Animal {
+    String getFamily();
 }

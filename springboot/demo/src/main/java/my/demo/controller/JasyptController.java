@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController("/jasypt")
 public class JasyptController {
-
     public void get(){
     }
 

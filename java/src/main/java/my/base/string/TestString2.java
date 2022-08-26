@@ -20,9 +20,19 @@ public class TestString2 {
 //        System.out.println(1);
 
 
-        System.out.println("a".getBytes().length);
+        /*System.out.println("a".getBytes().length);
         System.out.println("我".getBytes(StandardCharsets.UTF_16).length);
         System.out.println("\uD85D\uDE0C".getBytes().length);
-        System.out.println("😭".getBytes().length);
+        System.out.println("😭".getBytes().length);*/
+        m1();
+    }
+
+    public static void m1(){
+        System.out.println(String.format("%02d",1));
+        System.out.println(String.format("%02d",9));
+        System.out.println(String.format("%02d",10));
+        System.out.println(String.format("%02d",11));
+
+
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class TestInt {
     public static void main(String[] args) {
-        m2();
+        m1();
     }
 
     public static  void m1(){
@@ -32,7 +32,7 @@ public class TestInt {
 
         int i=1000;
         int i2=1000;
-        System.out.println(i==i2);
+        System.out.println("i==i2:"+(i==i2));
     }
 
     public static void m2(){

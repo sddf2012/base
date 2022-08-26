@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author liu peng bo
  * @date 2022/1/3 上午10:55
  */
-public class Cat {
+public class Cat extends CatFamily{
     public String name;
 
     public String sex;

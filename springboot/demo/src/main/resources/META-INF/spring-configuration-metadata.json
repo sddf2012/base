@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "sourceType": "my.demo.config.datasource.DynamicDatasourceProperties",
+      "name": "datasource.dynamic",
+      "type": "my.demo.config.datasource.DynamicDatasourceProperties"
+    },
+    {
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "my.demo.config.datasource.DynamicDatasourceProperties",
+      "name": "datasource.dynamic.defaultDs",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "my.demo.config.datasource.DynamicDatasourceProperties",
+      "name": "datasource.dynamic.hikari",
+      "type": "java.util.Map<java.lang.String,com.zaxxer.hikari.HikariConfig>"
+    },
+    {
+      "sourceType": "my.demo.config.datasource.DynamicDatasourceProperties",
+      "name": "datasource.dynamic.druid",
+      "type": "java.util.Map<java.lang.String,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceWrapper>"
+    }
+  ]
+}

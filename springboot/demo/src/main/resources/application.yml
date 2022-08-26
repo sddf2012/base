@@ -3,3 +3,27 @@ jasypt:
     password: lybgeek
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
+datasource:
+  dynamic:
+    defaultDs: test
+    hikari:
+      test:
+        jdbc-url: jdbc:mysql://localhost:3306/test
+        username: root
+        password: root
+        minimum-idle: 1
+      ds1:
+        jdbc-url: jdbc:mysql://localhost:3306/ds1
+        username: root
+        password: root
+        minimum-idle: 1
+    druid:
+      ds2:
+        url: jdbc:mysql://localhost:3306/ds2
+        username: root
+        password: root
+spring:
+  datasource:
+    druid:
+      driver:
+      url:

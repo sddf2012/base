@@ -1,0 +1,27 @@
+<?xmlversion="1.0"encoding="utf-8"?>
+<soap:Envelopexmlns:soap="http: schemas.xmlsoap.org soap envelope">
+<soap:Header>
+<s:RspHeaderxmlns:s=" http: esb.spdbbiz.com services S120030235"xmlns:d="http://esb.spdbbiz.com/metadata" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<d:MsgId>1f586a4c-52e4-4fb8-b553-a4dcd4b6582f</d:MsgId>
+<d:TargetSysId>0457</d:TargetSysId>
+</s:RspHeader>
+</soap:Header>
+<soap:Body>
+<s:RspBussInfoQryFrthEdtnxmlns:soap="http: schemas.xmlsoap.org soap envelope"xmlns:d=" http: esb.spdbbiz.com metadata"xmlns:s="http://esb.spdbbiz.com/services/S120030235">
+<s:RspSvcHeader>
+<s:TranDate>20220901</s:TranDate>
+<s:TranTime>110457</s:TranTime>
+<s:BackendSeqNo>0436202206011650329620000001</s:BackendSeqNo>
+<s:BackendSysId>0457</s:BackendSysId>
+<s:ReturnCode>000000000000</s:ReturnCode>
+<s:ReturnMsg>交易成功</s:ReturnMsg>
+<s:GlobalSeqNo>0436202206011650329620000001</s:GlobalSeqNo>
+</s:RspSvcHeader>
+<s:SvcBody>
+<s:ReplyCode>200</s:ReplyCode>
+<s:RetRsltDsc/>
+<s:RetCntnt/>
+</s:SvcBody>
+</s:RspBussInfoQryFrthEdtn>
+</soap:Body>
+</soap:Envelope>

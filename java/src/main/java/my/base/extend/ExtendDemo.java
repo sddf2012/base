@@ -22,4 +22,8 @@ public class ExtendDemo {
         List<CatFamily> catFamilies=(List<CatFamily>)o;
         System.out.println(1);
     }
+
+    public void innerM1(){
+
+    }
 }

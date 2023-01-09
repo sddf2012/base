@@ -22,5 +22,7 @@ public class TestString {
     int i=3;
         System.out.println(String.format("%09d", i + 1));*/
         System.out.println("啊".getBytes(StandardCharsets.UTF_8).length);
+        String a=null;
+        System.out.println("bbbb"+a);
     }
 }

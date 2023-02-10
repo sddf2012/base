@@ -20,13 +20,21 @@ class RefB{
   private RefA refA;
 
     public RefB(RefA refA) {
+        if(refA==null){
+            refA=new RefA(123);
+        }
         this.refA = refA;
     }
 }
+
+
 public class RefDemo {
     public static void main(String[] args) {
-        RefB refB=m1();
-        System.out.println(1);
+        /*RefB refB=m1();
+        System.out.println(1);*/
+        RefA refA=null;
+        RefB refB=new RefB(refA);
+        System.out.println(refA);
 
     }
 

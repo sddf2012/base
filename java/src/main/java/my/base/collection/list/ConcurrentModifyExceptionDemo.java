@@ -15,7 +15,13 @@ public class ConcurrentModifyExceptionDemo {
         list.add(3);
     }
     public static void main(String[] args) {
-        list1();
+       // list1();
+        System.out.println(String.join( ",",  new String[]{"1","2"}));
+        System.out.println(Arrays.toString(list.toArray()));
+        System.out.println(list);
+        /*StringBuilder builder=new StringBuilder("123");
+        builder.append(list);
+        System.out.println(builder.toString());*/
     }
     public static void list1(){
         for (int i = 0; i < list.size(); i++) {

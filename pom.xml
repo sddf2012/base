@@ -79,7 +79,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.4.0</version>
@@ -92,14 +92,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- 输出详细信息 -->
+                    &lt;!&ndash; 输出详细信息 &ndash;&gt;
                     <verbose>true</verbose>
-                    <!-- 覆盖生成文件 -->
+                    &lt;!&ndash; 覆盖生成文件 &ndash;&gt;
                     <overwrite>true</overwrite>
-                    <!-- 定义配置文件 -->
+                    &lt;!&ndash; 定义配置文件 &ndash;&gt;
                     <configurationFile>${basedir}/mybatis/generator-configuration.xml</configurationFile>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

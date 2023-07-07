@@ -11,10 +11,13 @@ public class ArrayDemo {
         //int[] test = {1, 7, 3, 9, 6, 5, 6, 4, 5};
         //int[] test = {2, 1, -1};
         //int[] test = {1, 2, 3};
-        //int[][] test = {{1,2,3}, {4, 5,6},{7,8,9}};
+        //int[][] test = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         //int[][] test = {{1,2}, {3,4}};
-        int[][] test = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
-        rotate(test);
+        //int[][] test = {{1,2,3}, {4,5,6}};
+        //int[][] test = {{1, 2}, {3, 4}, {5, 6}};
+        int[][] test = {{1}, {2}};
+        //int[][] test = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+        findDiagonalOrder(test);
     }
 
     /**
@@ -23,7 +26,6 @@ public class ArrayDemo {
      * 数组 中心下标 是数组的一个下标，其左侧所有元素相加的和等于右侧所有元素相加的和。
      * 如果中心下标位于数组最左端，那么左侧数之和视为 0 ，因为在下标的左侧不存在元素。这一点对于中心下标位于数组最右端同样适用。
      * 如果数组有多个中心下标，应该返回 最靠近左边 的那一个。如果数组不存在中心下标，返回 -1
-     *
      */
     public static int pivotIndex(int[] nums) {
         /*int l = -1;
@@ -99,7 +101,6 @@ public class ArrayDemo {
      * 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
      * <p>
      * 请必须使用时间复杂度为 O(log n) 的算法。
-     *
      */
     public static int searchInsert(int[] nums, int target) {
         /*int length = nums.length / 2;
@@ -187,7 +188,6 @@ public class ArrayDemo {
      * 给你一幅由 N × N 矩阵表示的图像，其中每个像素的大小为 4 字节。请你设计一种算法，将图像旋转 90 度。
      * <p>
      * 不占用额外内存空间能否做到？
-     *
      */
     public static void rotate(int[][] matrix) {
         /*int length = matrix.length;
@@ -234,5 +234,145 @@ public class ArrayDemo {
             }
         }
         System.out.println(Arrays.deepToString(matrix));
+    }
+
+    /**
+     * 零矩阵
+     * 编写一种算法，若M × N矩阵中某个元素为0，则将其所在的行与列清零。
+     * <p>
+     * 输入：
+     * [
+     * [1,1,1],
+     * [1,0,1],
+     * [1,1,1]
+     * ]
+     * 输出：
+     * [
+     * [1,0,1],
+     * [0,0,0],
+     * [1,0,1]
+     * ]
+     */
+    public static void setZeroes(int[][] matrix) {
+        Set<Integer> rows = new HashSet<>();
+        Set<Integer> columns = new HashSet<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (matrix[i][j] == 0) {
+                    rows.add(i);
+                    columns.add(j);
+                }
+            }
+        }
+        for (Integer row : rows) {
+            Arrays.fill(matrix[row], 0);
+        }
+        for (Integer column : columns) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][column] = 0;
+            }
+        }
+        System.out.println(Arrays.deepToString(matrix));
+    }
+
+    /**
+     * 给你一个大小为 m x n 的矩阵 mat ，请以对角线遍历的顺序，用一个数组返回这个矩阵中的所有元素。
+     * 输入：mat = [[1,2,3],[4,5,6],[7,8,9]]
+     * 输出：[1,2,4,7,5,3,6,8,9]
+     */
+    public static void findDiagonalOrder(int[][] mat) {
+        /*int m = mat.length;
+        int n = mat[0].length;
+        int size = m * n;
+        int i = 0, j = 0;
+        int k = 0;
+        boolean up = false;
+        int[] result = new int[size];
+        while (k < size) {
+            result[k] = mat[i][j];
+            //向右
+            if (i == 0 && j < n - 1 && j % 2 == 0) {
+                j++;
+                up = false;
+            } else if (i == m - 1 && j < n - 1 && !up) {
+                //向右
+                j++;
+                up = true;
+            } else if (i < m - 1 && n == 1) {
+                //向下
+                i++;
+                up = true;
+            } else if (j == 0 && i < m - 1 && i % 2 == 1) {
+                //向下
+                i++;
+                up = true;
+            } else if (j == n - 1 && i < m - 1 && up) {
+                //向下
+                i++;
+                up = false;
+            } else if (up) {
+                //右上
+                i--;
+                j++;
+            } else {
+                //左下
+                i++;
+                j--;
+            }
+            k++;
+        }
+        System.out.println(Arrays.toString(result));*/
+        /*int m = mat.length;
+        int n = mat[0].length;
+        int[] result = new int[m * n];
+        boolean up = false;
+        int i, j, k = 0;
+        for (int line = 0; line < m + n - 1; line++) {
+            up = !up;
+            if (up) {
+                for (i = m - 1; i >= 0; i--) {
+                    j = line - i;
+                    if (j >= 0 && j < n) {
+                        result[k] = mat[i][j];
+                        k++;
+                    }
+                }
+            } else {
+                for (i = 0; i < m; i++) {
+                    j = line - i;
+                    if (j >= 0 && j < n) {
+                        result[k] = mat[i][j];
+                        k++;
+                    }
+                }
+            }
+        }*/
+
+        int m = mat.length;
+        int n = mat[0].length;
+        int[] res = new int[m * n];
+        int pos = 0;
+        for (int i = 0; i < m + n - 1; i++) {
+            if (i % 2 == 1) {
+                int x = i < n ? 0 : i - n + 1;
+                int y = i < n ? i : n - 1;
+                while (x < m && y >= 0) {
+                    res[pos] = mat[x][y];
+                    pos++;
+                    x++;
+                    y--;
+                }
+            } else {
+                int x = i < m ? i : m - 1;
+                int y = i < m ? 0 : i - m + 1;
+                while (x >= 0 && y < n) {
+                    res[pos] = mat[x][y];
+                    pos++;
+                    x--;
+                    y++;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(res));
     }
 }

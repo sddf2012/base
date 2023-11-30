@@ -3,6 +3,7 @@ package my.base.string;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * @author liu peng bo
@@ -10,21 +11,10 @@ import java.nio.charset.StandardCharsets;
  */
 public class TestString2 {
     public static void main(String[] args) throws UnsupportedEncodingException {
-//        System.out.println("我".length());
-//        System.out.println("\uD85D\uDE0C".length());
-//        System.out.println(new String("我".getBytes(), StandardCharsets.UTF_8).length());
-//        System.out.println(new String("我".getBytes(StandardCharsets.UTF_16), StandardCharsets.UTF_16).length());
-//        byte[] a="我".getBytes();
-//        byte[] b="我".getBytes(StandardCharsets.UTF_8);
-//        byte[] c="我".getBytes(StandardCharsets.UTF_16);
-//        System.out.println(1);
-
-
-        /*System.out.println("a".getBytes().length);
-        System.out.println("我".getBytes(StandardCharsets.UTF_16).length);
-        System.out.println("\uD85D\uDE0C".getBytes().length);
-        System.out.println("😭".getBytes().length);*/
-        m1();
+       // m2();
+        Object a=null;
+        String b=(String) a;
+        System.out.println(b);
     }
 
     public static void m1(){
@@ -32,7 +22,11 @@ public class TestString2 {
         System.out.println(String.format("%02d",9));
         System.out.println(String.format("%02d",10));
         System.out.println(String.format("%02d",11));
+    }
 
-
+    public static void m2(){
+        StringBuilder s=new StringBuilder();
+        //s.append("a").append(",");
+        System.out.println(s.length()>0);
     }
 }

@@ -5,6 +5,26 @@ package my.base.string;
  * @date 2022/1/3 下午4:35
  */
 public class TestString {
+    public static void main(String[] args) {
+        /*TestString testString=new TestString();
+        testString.change(testString.str);*/
+        //m1();
+        basic2();
+    }
+
+    //str指向堆中good   因为是显式new，字符串常量池也有good
+    String str = new String("good");
+
+    public  void change(String str) {
+        System.out.println(str==this.str);//false
+        System.out.println("======" + str);//good
+        //String不可变性，栈上的str（String类型没有加this）变为 "test ok"，即是字符串常量池新增一个 "test ok"，str指向符串常量池（
+        str = "test ok";
+        System.out.println("str======" + str);//str======test ok
+        System.out.println("this.str======" + this.str);//this.str======good
+        System.out.println(str==this.str);//false
+    }
+
     public static void basic(){
         System.out.println();//2121
         System.out.println("1");//2122
@@ -45,8 +65,6 @@ public class TestString {
         /*String s="a"+"b";
         //常量池中已存在，不会再次创建
         String s1="ab";
-        //在常量池中生成a
-        String s2="a";
         //true
         System.out.println(s==s1);*/
 
@@ -109,15 +127,11 @@ public class TestString {
     }
 
     public static void m1(){
-        String s = new String("1");
-        s.intern();
-        String s2 = "1";
-        System.out.println(s == s2);
-
-        String s3 = new String("1") + new String("1");
-        //s3.intern();
-        String s4 = "11";
-        System.out.println(s3 == s4);
+        String s1 = "a";
+        String s2 = "b";
+        String s3 = "ab";
+        String s4 = s1 + s2;
+        System.out.println(s3 == s4);//false
     }
 
     public static void m2(){
@@ -131,10 +145,5 @@ public class TestString {
         s3.intern();
         System.out.println(s3 == s4);
     }
-    public static void main(String[] args) {
-        basic2();
-        //basic();
-        //m1();
-        //m2();
-    }
+
 }

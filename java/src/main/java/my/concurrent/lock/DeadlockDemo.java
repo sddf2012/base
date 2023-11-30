@@ -1,6 +1,5 @@
 package my.concurrent.lock;
 
-import org.omg.PortableServer.THREAD_POLICY_ID;
 
 /**
  * @author liu peng bo

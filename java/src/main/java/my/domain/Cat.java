@@ -2,8 +2,6 @@ package my.domain;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author liu peng bo
@@ -16,7 +14,6 @@ public class Cat extends CatFamily{
 
     public int age;
 
-    @XmlTransient
     public String getName() {
         return name;
     }
@@ -25,7 +22,6 @@ public class Cat extends CatFamily{
         this.name = name;
     }
 
-    @XmlTransient
     public String getSex() {
         return sex;
     }
@@ -34,7 +30,6 @@ public class Cat extends CatFamily{
         this.sex = sex;
     }
 
-    @XmlTransient
     public int getAge() {
         return age;
     }

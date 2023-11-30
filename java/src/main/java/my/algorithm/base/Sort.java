@@ -1,9 +1,8 @@
 package my.algorithm.base;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,13 +14,19 @@ import java.util.stream.Stream;
  */
 public class Sort {
     public static void main(String[] args) {
-        int order = 1;
+        /*int order = 1;
         int[] input = randomArray(10, 40);
         System.out.println(Arrays.toString(input));
         int[] output = binaryInsertionSort(order, Arrays.copyOf(input, input.length));
         System.out.println(Arrays.toString(output));
         elementConsistent(input, output);
-        isOrderly(order, output);
+        isOrderly(order, output);*/
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String date= dateFormat.format(new Date());
+        System.out.println(date);
+        System.out.println(date.replace("-","/"));
+
+        System.out.println(System.currentTimeMillis());
     }
 
     public static int[] randomArray(int minLength, int maxLength) {
@@ -96,19 +101,11 @@ public class Sort {
     }
 
 
-
     public static int[] quickSort(int order, int[] input) {
-
-
-
 
 
         return input;
     }
-
-
-
-
 
 
     /**

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test Title</title>
+</head>
+<body>
+<script>
+    let ws;
+
+    function connect() {
+        if (ws === undefined || ws === null) {
+            ws = new WebSocket("ws://localhost:8889/ws/test");
+            ws.onopen = function () {
+                document.getElementById("connect").innerText = "断开连接";
+                //document.getElementById("connectText").innerText = "连接成功";
+            };
+            ws.onmessage = function (event) {
+                console.log("Received: " + event.data);
+            };
+            ws.onclose = function () {
+                document.getElementById("connect").innerText = "连接服务器";
+                //document.getElementById("connectText").innerText = "连接已关闭";
+            };
+        } else {
+            ws.close()
+        }
+    }
+
+    function send() {
+        if (ws === undefined || ws === null) {
+            alert("请先连接服务器");
+            return;
+        }
+        let msg = document.getElementById("sendMsg").value;
+        console.log("Send: " + msg)
+        if (msg === "") {
+            alert("请输入消息");
+            return;
+        }
+        ws.send(msg);
+        document.getElementById("sendMsg").innerText = "";
+        let allMsg = document.getElementById("msg").value;
+        allMsg += msg + "\n";
+        document.getElementById("msg").innerText = allMsg;
+    }
+
+</script>
+<button id="connect" onclick="connect()">连接服务器</button>
+<div id="connectText"></div>
+<br><br><br>
+<label for="sendMsg"></label><textarea id="sendMsg" style="height: 200px;width: 30%"></textarea><br>
+<button id="send" onclick="send()">发送消息</button>
+<br><br><br>
+<label for="msg"></label><textarea id="msg" style="height: 200px;width: 30%"></textarea>
+</body>
+</html>

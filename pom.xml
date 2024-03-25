@@ -8,6 +8,8 @@
         <module>springboot</module>
         <module>java</module>
         <module>servlet</module>
+        <module>websocket</module>
+        <module>ws</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -26,16 +28,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
@@ -44,23 +36,23 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
+            <!--<version>2.13.3</version>-->
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.13.3</version>
+            <!--<version>2.13.3</version>-->
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.13.3</version>
+            <!-- <version>2.13.3</version>-->
         </dependency>
 
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -70,37 +62,9 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!--<plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.4.0</version>
-                <executions>
-                    <execution>
-                        <id>Generate MyBatis Artifacts</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    &lt;!&ndash; 输出详细信息 &ndash;&gt;
-                    <verbose>true</verbose>
-                    &lt;!&ndash; 覆盖生成文件 &ndash;&gt;
-                    <overwrite>true</overwrite>
-                    &lt;!&ndash; 定义配置文件 &ndash;&gt;
-                    <configurationFile>${basedir}/mybatis/generator-configuration.xml</configurationFile>
-                </configuration>
-            </plugin>-->
-        </plugins>
-    </build>
+
 
 </project>

@@ -11,11 +11,14 @@ public class TestBitOperation {
         System.out.println(1^0);
         System.out.println(0^0);
         System.out.println((int)(1<<16));*/
-        System.out.println((-1)<<1);
+        System.out.println(System.currentTimeMillis());
+        System.out.println(System.currentTimeMillis()>>10);
+        System.out.println(System.currentTimeMillis()>>10);
+        /*System.out.println((-1)<<1);
         System.out.println((-1)<<29);
         System.out.println((1)<<29);
         System.out.println((2)<<29);
-        System.out.println((3)<<29);
+        System.out.println((3)<<29);*/
 
 
     }

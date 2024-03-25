@@ -19,7 +19,7 @@ public class NioServer {
         //创建serverSocketChannel
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         //绑定端口
-        serverSocketChannel.socket().bind(new InetSocketAddress(6666));
+        serverSocketChannel.socket().bind(new InetSocketAddress(8888));
         //设置为非阻塞
         serverSocketChannel.configureBlocking(false);
         //得到Selector对象
@@ -27,14 +27,16 @@ public class NioServer {
             //把ServerSocketChannel注册到selector，事件为OP_ACCEPT
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
             //如果返回的>0，表示已经获取到关注的事件
-            while (selector.select() > 0) {
+            int num = 0;
+            while ((num = selector.select()) > 0) {
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
                 while (iterator.hasNext()) {
                     //获得到一个事件
-                    SelectionKey next = iterator.next();
+                    SelectionKey selectionKey = iterator.next();
+                    iterator.remove();
                     //如果是OP_ACCEPT，表示有新的客户端连接
-                    if (next.isAcceptable()) {
+                    if (selectionKey.isAcceptable()) {
                         //给该客户端生成一个SocketChannel
                         SocketChannel accept = serverSocketChannel.accept();
                         accept.configureBlocking(false);
@@ -42,18 +44,22 @@ public class NioServer {
                         accept.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
                         System.out.println(System.currentTimeMillis() + " 获取到一个客户端连接");
                         //如果是读事件
-                    } else if (next.isReadable()) {
+                    } else if (selectionKey.isReadable()) {
                         //通过key 反向获取到对应的channel
-                        SocketChannel channel = (SocketChannel) next.channel();
+                        SocketChannel channel = (SocketChannel) selectionKey.channel();
                         //获取到该channel关联的buffer
-                        ByteBuffer buffer = (ByteBuffer) next.attachment();
-                        while (channel.read(buffer) != -1) {
+                        ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
+                        if (channel.read(buffer) != -1) {
                             buffer.flip();
                             System.out.println(System.currentTimeMillis() + " " + new String(buffer.array(), 0, buffer.limit()));
                             buffer.clear();
+                        } else {
+                            System.out.println("123123123");
+                            selectionKey.cancel();
+                            //channel.close();
                         }
                     }
-                    iterator.remove();
+
                 }
             }
         }

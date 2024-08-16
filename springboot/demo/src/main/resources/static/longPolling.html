@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长轮询示例</title>
+</head>
+
+<body>
+<button onclick="startLongPolling()">开始长轮询</button>
+<div id="result"></div>
+
+<script>
+    function startLongPolling() {
+        const clientId = "client1";
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `http://localhost:8080/demo/longPolling?clientId=${clientId}`, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("response:", xhr.readyState, xhr.status)
+                document.getElementById('result').innerHTML = xhr.responseText;
+                startLongPolling(); // 收到响应后再次发起请求
+            }
+        };
+
+        xhr.send();
+    }
+</script>
+</body>
+
+</html>

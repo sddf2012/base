@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #fff;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+
+        .chat-area {
+            flex-grow: 1;
+            padding: 10px;
+        }
+
+        .friend-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .friend-list li {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .friend-list li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .chat-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="sidebar">
+        <h3>Friends</h3>
+        <ul class="friend-list"></ul>
+    </div>
+    <div class="chat-area">
+        <div class="chat-box"></div>
+        <input type="text" class="message-input" placeholder="Type your message...">
+    </div>
+</div>
+<script>
+    // 从本地存储中获取 token
+    const token = localStorage.getItem('token');
+    if (!token) {
+        // 如果没有 token，重定向到登录页面
+        window.location.href = 'login.html';
+    }
+
+    // 获取好友列表的函数
+    function getFriends() {
+        fetch('/api/friends')
+            .then(response => response.json())
+            .then(friends => {
+                const friendList = document.querySelector('.friend-list');
+                friendList.innerHTML = '';
+                friends.forEach(friend => {
+                    const li = document.createElement('li');
+                    li.textContent = friend.name;
+                    friendList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching friends:', error));
+    }
+
+    // 发送消息的函数
+    function sendMessage(friendId, message) {
+        fetch('/api/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // 添加 token 到请求头
+            },
+            body: JSON.stringify({ friendId, message })
+        })
+            .then(response => response.json())
+            .then(result => console.log(result))
+            .catch(error => console.error('Error sending message:', error));
+    }
+
+    // 处理消息输入框的回车键事件
+    document.querySelector('.message-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const message = this.value;
+            const selectedFriend = document.querySelector('.friend-list.active');
+            if (selectedFriend) {
+                const friendId = selectedFriend.dataset.friendId;
+                sendMessage(friendId, message);
+                this.value = '';
+            }
+        }
+    });
+
+    // 模拟点击好友时切换聊天对象并加载聊天记录
+    document.querySelector('.friend-list').addEventListener('click', function (e) {
+        if (e.target.tagName === 'LI') {
+            document.querySelectorAll('.friend-list li').forEach(li => li.classList.remove('active'));
+            e.target.classList.add('active');
+            const friendId = e.target.dataset.friendId;
+            // 加载聊天记录
+            fetch(`/api/chatHistory?friendId=${friendId}`)
+                .then(response => response.json())
+                .then(chatHistory => {
+                    const chatBox = document.querySelector('.chat-box');
+                    chatBox.innerHTML = '';
+                    chatHistory.forEach(message => {
+                        const p = document.createElement('p');
+                        p.textContent = `${message.sender}: ${message.content}`;
+                        chatBox.appendChild(p);
+                    });
+                })
+                .catch(error => console.error('Error fetching chat history:', error));
+        }
+    });
+
+    // 长轮询接收消息
+    function longPolling(friendId) {
+        fetch(`/api/receiveMessage?friendId=${friendId}`, { method: 'GET' })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    // 如果没有新消息，继续长轮询
+                    return longPolling(friendId);
+                }
+            })
+            .then(message => {
+                const chatBox = document.querySelector('.chat-box');
+                const p = document.createElement('p');
+                p.textContent = `${message.sender}: ${message.content}`;
+                chatBox.appendChild(p);
+                // 收到消息后继续长轮询
+                return longPolling(friendId);
+            })
+            .catch(error => {
+                console.error('Error in long polling:', error);
+                // 出现错误时，等待一段时间后重新开始长轮询
+                setTimeout(() => longPolling(friendId), 5000);
+            });
+    }
+
+    // 初始加载好友列表
+    getFriends();
+
+    // 为每个好友添加数据-id 属性，用于标识好友
+    document.querySelectorAll('.friend-list li').forEach((li, index) => {
+        li.dataset.friendId = index + 1;
+    });
+
+    // 当点击好友列表中的好友时，启动长轮询
+    document.querySelector('.friend-list').addEventListener('click', function (e) {
+        if (e.target.tagName === 'LI') {
+            const friendId = e.target.dataset.friendId;
+            longPolling(friendId);
+        }
+    });
+</script>
+</body>
+
+</html>

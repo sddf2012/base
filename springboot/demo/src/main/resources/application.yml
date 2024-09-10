@@ -47,3 +47,13 @@ spring:
     driver-class-name: org.sqlite.JDBC
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+
+logging:
+  level:
+    my:
+      demo:
+        mapper: DEBUG

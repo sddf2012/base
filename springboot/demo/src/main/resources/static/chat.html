@@ -4,188 +4,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            display: flex;
-        }
-
-        .sidebar {
-            width: 200px;
-            background-color: #fff;
-            padding: 10px;
-            border-right: 1px solid #ccc;
-        }
-
-        .chat-area {
-            flex-grow: 1;
-            padding: 10px;
-        }
-
-        .friend-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .friend-list li {
-            padding: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .friend-list li:hover {
-            background-color: #f0f0f0;
-        }
-
-        .chat-box {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 300px;
-            overflow-y: scroll;
-        }
-
-        .message-input {
-            width: 100%;
-            padding: 5px;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-    </style>
+    <title>Vue Chat App</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
 <body>
-<div class="container">
-    <div class="sidebar">
-        <h3>Friends</h3>
-        <ul class="friend-list"></ul>
-    </div>
-    <div class="chat-area">
-        <div class="chat-box"></div>
-        <input type="text" class="message-input" placeholder="Type your message...">
+
+<div id="app" class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Conversations</h3>
+            <ul class="list-group">
+                <li v-for="conversation in conversations" :key="conversation.sessionId" class="list-group-item"
+                    @click="selectConversation(conversation.sessionId)">
+                    {{ conversation.name }} <span v-if="conversation.unReadCount > 0"
+                                                  class="unread-count-circle">{{ conversation.unReadCount }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div v-if="selectedConversation">
+                <h3>{{ selectedConversation.name }}</h3>
+                <div class="messageBox" ref="messageBox">
+                    <div v-for="message in selectedConversation.messages" :key="message.id">
+                        <div class="messageTime"><span>{{ message.sendAt }}</span></div>
+                        <div :class="user.id===message.senderId? 'sender-message' : 'receiver-message'">
+                            <span>{{ message.content }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mt-3" v-if="selectedConversation">
+                    <input type="text" v-model="newMessage" class="form-control" placeholder="Type your message">
+                    <button class="btn btn-primary" @click="sendMessage">Send</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
-    // 从本地存储中获取 token
-    const token = localStorage.getItem('token');
-    if (!token) {
-        // 如果没有 token，重定向到登录页面
-        window.location.href = 'login.html';
-    }
-
-    // 获取好友列表的函数
-    function getFriends() {
-        fetch('/api/friends')
-            .then(response => response.json())
-            .then(friends => {
-                const friendList = document.querySelector('.friend-list');
-                friendList.innerHTML = '';
-                friends.forEach(friend => {
-                    const li = document.createElement('li');
-                    li.textContent = friend.name;
-                    friendList.appendChild(li);
-                });
-            })
-            .catch(error => console.error('Error fetching friends:', error));
-    }
-
-    // 发送消息的函数
-    function sendMessage(friendId, message) {
-        fetch('/api/sendMessage', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // 添加 token 到请求头
-            },
-            body: JSON.stringify({ friendId, message })
-        })
-            .then(response => response.json())
-            .then(result => console.log(result))
-            .catch(error => console.error('Error sending message:', error));
-    }
-
-    // 处理消息输入框的回车键事件
-    document.querySelector('.message-input').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            const message = this.value;
-            const selectedFriend = document.querySelector('.friend-list.active');
-            if (selectedFriend) {
-                const friendId = selectedFriend.dataset.friendId;
-                sendMessage(friendId, message);
-                this.value = '';
-            }
-        }
-    });
-
-    // 模拟点击好友时切换聊天对象并加载聊天记录
-    document.querySelector('.friend-list').addEventListener('click', function (e) {
-        if (e.target.tagName === 'LI') {
-            document.querySelectorAll('.friend-list li').forEach(li => li.classList.remove('active'));
-            e.target.classList.add('active');
-            const friendId = e.target.dataset.friendId;
-            // 加载聊天记录
-            fetch(`/api/chatHistory?friendId=${friendId}`)
-                .then(response => response.json())
-                .then(chatHistory => {
-                    const chatBox = document.querySelector('.chat-box');
-                    chatBox.innerHTML = '';
-                    chatHistory.forEach(message => {
-                        const p = document.createElement('p');
-                        p.textContent = `${message.sender}: ${message.content}`;
-                        chatBox.appendChild(p);
-                    });
-                })
-                .catch(error => console.error('Error fetching chat history:', error));
-        }
-    });
-
-    // 长轮询接收消息
-    function longPolling(friendId) {
-        fetch(`/api/receiveMessage?friendId=${friendId}`, { method: 'GET' })
-            .then(response => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    // 如果没有新消息，继续长轮询
-                    return longPolling(friendId);
+    const app = Vue.createApp({
+        data() {
+            return {
+                user: undefined,
+                hostUrl: '',
+                conversations: [],
+                conversationMap: undefined,
+                selectedConversation: undefined,
+                newMessage: ''
+            };
+        },
+        created() {
+            this.getUser();
+            this.fetchConversations();
+            setTimeout(() => {
+                this.longPollingQueryMessageByUser();
+            }, 3000);
+        },
+        methods: {
+            getUser() {
+                let user = localStorage.getItem('user')
+                if (user) {
+                    user = JSON.parse(user)
+                    if (user.token) {
+                        this.user = user
+                        return
+                    }
                 }
-            })
-            .then(message => {
-                const chatBox = document.querySelector('.chat-box');
-                const p = document.createElement('p');
-                p.textContent = `${message.sender}: ${message.content}`;
-                chatBox.appendChild(p);
-                // 收到消息后继续长轮询
-                return longPolling(friendId);
-            })
-            .catch(error => {
-                console.error('Error in long polling:', error);
-                // 出现错误时，等待一段时间后重新开始长轮询
-                setTimeout(() => longPolling(friendId), 5000);
-            });
-    }
+                window.location.href = 'login.html';
+                /*this.user = {
+                    id: 1,
+                    name: '1号',
+                    token: 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXNlIiwic3ViIjoidXNlciIsInVzZXIiOiJ7XCJpZFwiOjEsXCJwaG9uZVwiOlwiMTU4MDAzMTM2MDBcIixcIm5hbWVcIjpcIjHlj7dcIixcInRva2VuXCI6bnVsbH0iLCJpYXQiOjE3MjU2MTM3NDEsImV4cCI6MTcyNjIxODU0MX0.E03hxn-mm8ZpVpDnUa7ZCDC4AJLkGS3trYtf26QbhZ4'
+                }*/
+            },
+            fetchConversations() {
+                fetch(this.hostUrl + '/chat/getUserSession', {
+                    method: 'POST',
+                    headers: {
+                        'token': this.user.token
+                    }
+                }).then(response => response.json())
+                    .then(conversations => {
+                        if (conversations.code === '0') {
+                            this.conversations = conversations.data;
+                            this.conversationMap = new Map(this.conversations.map(item => [item.sessionId, item]));
+                        }
+                    })
+                    .catch(error => console.error('Error fetching conversations:', error));
+            },
+            selectConversation(id) {
+                this.selectedConversation = this.conversationMap.get(id);
+                this.fetchMessages(id, this.selectedConversation.maxMessageId);
+            },
+            fetchMessages(sessionId, maxMessageId) {
+                let url = this.hostUrl + '/chat/querySessionMessage?sessionId=' + sessionId + (maxMessageId ? '&maxMessageId=' + maxMessageId : '');
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'token': this.user.token
+                    }
+                })
+                    .then(response => response.json())
+                    .then(messages => {
+                        if (messages.data && messages.data.length > 0) {
+                            if (!this.selectedConversation.messages) {
+                                this.selectedConversation.messages = []
+                            }
+                            messages.data.forEach(message => {
+                                this.selectedConversation.messages.push(message)
+                            })
+                            this.selectedConversation.maxMessageId = messages.data[messages.data.length - 1].id
+                        }
+                        this.selectedConversation.unReadCount = 0;
+                        this.$nextTick(() => {
+                            const messageBox = this.$refs.messageBox;
+                            messageBox.scrollTop = messageBox.scrollHeight;
+                        });
+                    })
+                    .catch(error => console.error('Error fetching messages:', error));
+            },
 
-    // 初始加载好友列表
-    getFriends();
+            sendMessage() {
+                if (this.selectedConversation) {
+                    fetch(this.hostUrl + `/chat/sendMessage`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'token': this.user.token
+                        },
+                        body: JSON.stringify({
+                            sessionId: this.selectedConversation.sessionId,
+                            senderId: this.user.id,
+                            receiverId: this.selectedConversation.targetUserId,
+                            contentType: '1',
+                            content: this.newMessage
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(message => {
+                            if (message.code === '0') {
+                                if (!this.selectedConversation.messages) {
+                                    this.selectedConversation.messages = []
+                                }
+                                this.selectedConversation.messages.push(message.data);
+                                this.newMessage = ''
+                            }
+                        })
+                        .catch(error => console.error('Error sending message:', error));
+                }
+            },
 
-    // 为每个好友添加数据-id 属性，用于标识好友
-    document.querySelectorAll('.friend-list li').forEach((li, index) => {
-        li.dataset.friendId = index + 1;
-    });
+            longPollingQueryMessageByUser() {
+                fetch(this.hostUrl + '/chat/longPollingQueryMessageByUser', {
+                    method: 'POST',
+                    headers: {
+                        'token': this.user.token
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.code === '0') {
+                            let map = data.data
+                            if (map) {
+                                new Map(Object.entries(map)).forEach((messages, sessionId) => {
+                                    let session = this.conversationMap.get(sessionId)
+                                    if (session) {
+                                        messages.forEach(message => {
+                                            session.messages.push(message)
+                                        })
+                                        session.unReadCount = session.unReadCount + messages.length
+                                    } else {
+                                        this.addNewSession(sessionId, messages)
+                                    }
+                                })
+                            }
+                        }
+                        this.longPollingQueryMessageByUser()
+                    })
+                    .catch(error => console.error('Error fetching messages:', error));
+            },
 
-    // 当点击好友列表中的好友时，启动长轮询
-    document.querySelector('.friend-list').addEventListener('click', function (e) {
-        if (e.target.tagName === 'LI') {
-            const friendId = e.target.dataset.friendId;
-            longPolling(friendId);
+            addNewSession(sessionId, messages) {
+                fetch(this.hostUrl + '/chat/getSessionById?sessionId=' + sessionId, {
+                    method: 'POST',
+                    headers: {
+                        'token': this.user.token
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.code === '0') {
+                            let session = data.data;
+                            if (session && !this.conversationMap.get(sessionId)) {
+                                session.messages = messages
+                                session.unReadCount = session.unReadCount + messages.length
+                                this.conversations.push(session)
+                                this.conversationMap.set(session.sessionId, session)
+                            }
+                        }
+                    })
+            }
+
         }
     });
+
+    app.mount('#app');
 </script>
+
 </body>
+
+<style>
+    .messageBox {
+        max-height: 300px;
+        overflow: auto;
+        border: 1px solid #ccc
+    }
+
+    .sender-message {
+        margin: 5px 5px 15px 5px;
+        text-align: right;
+    }
+
+    .messageTime {
+        color: #999;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .sender-message span {
+        background: lightblue;
+        padding: 5px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .receiver-message {
+        margin: 5px 5px 15px 5px;
+    }
+
+    .receiver-message span {
+        background: lightgreen;
+        padding: 5px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .unread-count-circle {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: red;
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        line-height: 20px;
+    }
+</style>
 
 </html>

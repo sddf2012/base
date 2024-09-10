@@ -5,6 +5,7 @@ import my.demo.domain.bo.LoginBo;
 import my.demo.domain.entity.User;
 import my.demo.domain.vo.LoginInfo;
 import my.demo.repository.UserRepository;
+import my.demo.service.utils.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,9 @@ public class UserService {
         if (user == null) {
             throw new BusinessException("用户不存在");
         }
-        String token = UUID.randomUUID().toString().replace("-", "");
         LoginInfo loginInfo = new LoginInfo();
         BeanUtils.copyProperties(user, loginInfo);
-        loginInfo.setToken(token);
-        loginInfo.setExpireTime(System.currentTimeMillis() + 86400000L);
-        tokenMap.put(token, loginInfo);
+        loginInfo.setToken(JwtUtil.createJwtToken(loginInfo));
         return loginInfo;
     }
 }

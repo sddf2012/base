@@ -26,16 +26,23 @@ public class DemoController {
         log.info("longPolling req!");
         DeferredResult<String> result = new DeferredResult<>();
 
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(5000);
-                result.setResult("success");
+                result.setResult("success " + Thread.currentThread().getName());
             } catch (Exception e) {
                 result.setErrorResult("error");
             }
         });
         log.info(thread.getName() + " start!");
-        thread.start();
+        thread.start();*/
+
+        try {
+            Thread.sleep(5000);
+            result.setResult("success " + Thread.currentThread().getName());
+        } catch (Exception e) {
+            result.setErrorResult("error");
+        }
         return result;
     }
 }

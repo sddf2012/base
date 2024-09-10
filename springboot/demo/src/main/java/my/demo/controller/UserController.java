@@ -1,5 +1,6 @@
 package my.demo.controller;
 
+import my.demo.config.CommonVo;
 import my.demo.domain.bo.LoginBo;
 import my.demo.domain.vo.LoginInfo;
 import my.demo.service.UserService;
@@ -20,8 +21,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public LoginInfo login(@RequestBody LoginBo loginBo) {
-        return userService.login(loginBo);
+    public CommonVo<LoginInfo> login(@RequestBody LoginBo loginBo) {
+        return CommonVo.success(userService.login(loginBo));
     }
 
 

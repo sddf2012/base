@@ -2,6 +2,7 @@ package my.demo.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import my.demo.config.DateToStringConverter;
 
 import java.util.Date;
 
@@ -17,6 +18,8 @@ public class ChatSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     /**
      * 单聊唯一标识
      */
@@ -24,5 +27,6 @@ public class ChatSession {
 
     private String type;
 
+    @Convert(converter = DateToStringConverter.class)
     private Date createAt;
 }

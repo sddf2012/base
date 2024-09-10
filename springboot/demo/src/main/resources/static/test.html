@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Scroll to Bottom Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .chat-messages {
+            max-height: 100px;
+            overflow-y: auto;
+            border: #999999;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app" class="container mt-4">
+    <h2>Chat</h2>
+    <div class="chat-messages" ref="messageContainer">
+        <div v-for="message in messages" :key="message.id">
+            {{ message.content }}
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                messages: [
+                    { id: 1, content: 'Message 1' },
+                    { id: 2, content: 'Message 2' },
+                    // 添加更多消息模拟消息过多的情况
+                    { id: 3, content: 'Message 3' },
+                    { id: 4, content: 'Message 4' },
+                    { id: 5, content: 'Message 5' },
+                    { id: 6, content: 'Message 6' },
+                    { id: 7, content: 'Message 7' },
+                    { id: 8, content: 'Message 8' },
+                    { id: 9, content: 'Message 9' },
+                    { id: 10, content: 'Message 10' }
+                ]
+            };
+        },
+        mounted() {
+            this.$nextTick(() => {
+                const messageContainer = this.$refs.messageContainer;
+                if (messageContainer) {
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                }
+            });
+        }
+    });
+
+    app.mount('#app');
+</script>
+
+</body>
+
+</html>

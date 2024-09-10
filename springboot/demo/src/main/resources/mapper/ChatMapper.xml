@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="my.demo.mapper.ChatMapper">
+    <select id="querySingleChatSession" resultType="my.demo.domain.vo.SessionInfo">
+        select a.id             sessionId,
+               a.user_united_id userUnitedId,
+               a.type,
+               c.name,
+               c.id             targetUserId,
+               c.name           targetUserName,
+               c.phone          targetUserPhone
+        from ch_session a
+                 join ch_session_user b on a.id = b.session_id
+                 join ch_session_user d on a.id = d.session_id
+                 left join ch_user c on d.user_id = c.id
+        where b.user_id = #{userId}
+          and d.user_id != #{userId}
+          and a.type = '1'
+    </select>
+</mapper>

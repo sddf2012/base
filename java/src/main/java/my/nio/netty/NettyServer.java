@@ -6,14 +6,15 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class NettyServer {
-    
+
     public static void main(String[] args) throws Exception {
-        
+
         //创建BossGroup 和 WorkerGroup
         //说明
         //1. 创建两个线程组 bossGroup 和 workerGroup
@@ -23,7 +24,6 @@ public class NettyServer {
         //   默认实际 cpu核数 * 2
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(); //8
-        
         try {
             //创建服务器端的启动对象，配置参数
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -32,13 +32,15 @@ public class NettyServer {
                     .channel(NioServerSocketChannel.class) //使用NioSocketChannel 作为服务器的通道实现
                     .option(ChannelOption.SO_BACKLOG, 128) // 设置线程队列得到连接个数
                     .childOption(ChannelOption.SO_KEEPALIVE, true) //设置保持活动连接状态
-            //          .handler(null) // 该 handler对应 bossGroup , childHandler 对应 workerGroup
+                    //          .handler(null) // 该 handler对应 bossGroup , childHandler 对应 workerGroup
                     .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道初始化对象(匿名对象)
                         //给pipeline 设置处理器
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             System.out.println("客户socketchannel hashcode=" + ch.hashCode()); //可以使用一个集合管理 SocketChannel， 再推送消息时，可以将业务加入到各个channel 对应的 NIOEventLoop 的 taskQueue 或者 scheduleTaskQueue
-                            ch.pipeline().addLast(new NettyServerHandler());
+                            ch.pipeline().addLast(new NettyServerHandler()
+                                    , new TestInboundHandler1(), new TestInboundHandler2()
+                                    , new TestOutboundHandler1() ,new TestOutboundHandler2());
                         }
                     }); // 给我们的workerGroup 的 EventLoop 对应的管道设置处理器
 
@@ -63,7 +65,7 @@ public class NettyServer {
 
             //对关闭通道进行监听
             cf.channel().closeFuture().sync();
-        }finally {
+        } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }

@@ -13,7 +13,7 @@ public class NettyClient {
     public static void main(String[] args) throws Exception {
 
         //客户端需要一个事件循环组
-        EventLoopGroup group = new NioEventLoopGroup();
+        EventLoopGroup group = new NioEventLoopGroup(1);
         try {
             
             //创建客户端启动对象
@@ -26,7 +26,7 @@ public class NettyClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new NettyClientHandler())
-                                    .addLast(new NettyOutboundHandler()); //加入自己的处理器
+                                    /*.addLast(new NettyOutboundHandler())*/; //加入自己的处理器
                         }
                     });
             

@@ -41,6 +41,9 @@
 #    console:
 #      enabled: true
 #      path: /h2
+server:
+  port: 8080
+
 spring:
   datasource:
     url: jdbc:sqlite:sqlite/sqlite.db

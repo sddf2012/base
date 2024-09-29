@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            height: 200px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        #input {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>WebSocket Example</h1>
+<div id="messages"></div>
+<input type="text" id="input" placeholder="Type a message...">
+<button id="send">Send</button>
+
+<script>
+    // 创建 WebSocket 连接
+    const socket = new WebSocket('ws://localhost:8088/ws'); // 请根据您的服务器地址和端口修改
+
+    // DOM 元素
+    const messagesDiv = document.getElementById('messages');
+    const input = document.getElementById('input');
+    const sendButton = document.getElementById('send');
+
+    // 监听 WebSocket 连接打开事件
+    socket.addEventListener('open', function (event) {
+        console.log('Connected to WebSocket server');
+    });
+
+    // 监听 WebSocket 消息事件
+    socket.addEventListener('message', function (event) {
+        const message = event.data;
+        console.log('Message from server: ', message);
+        // 将收到的消息显示在页面上
+        const messageElement = document.createElement('div');
+        messageElement.textContent = 'Server: ' + message;
+        messagesDiv.appendChild(messageElement);
+    });
+
+    // 发送消息按钮点击事件
+    sendButton.addEventListener('click', function () {
+        const message = input.value;
+        if (message) {
+            socket.send(message); // 发送消息
+            console.log('Sent: ' + message);
+            // 清空输入框
+            input.value = '';
+
+            // 显示发送的消息
+            const messageElement = document.createElement('div');
+            messageElement.textContent = 'You: ' + message;
+            messagesDiv.appendChild(messageElement);
+        }
+    });
+
+    // 监听 WebSocket 连接关闭事件
+    socket.addEventListener('close', function (event) {
+        console.log('Disconnected from WebSocket server');
+    });
+
+    // 监听错误事件
+    socket.addEventListener('error', function (event) {
+        console.error('WebSocket error: ', event);
+    });
+
+
+</script>
+</body>
+</html>

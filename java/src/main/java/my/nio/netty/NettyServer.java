@@ -23,7 +23,7 @@ public class NettyServer {
         //4. bossGroup 和 workerGroup 含有的子线程(NioEventLoop)的个数
         //   默认实际 cpu核数 * 2
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(); //8
+        EventLoopGroup workerGroup = new NioEventLoopGroup(2); //8
         try {
             //创建服务器端的启动对象，配置参数
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -37,10 +37,10 @@ public class NettyServer {
                         //给pipeline 设置处理器
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            System.out.println("客户socketchannel hashcode=" + ch.hashCode()); //可以使用一个集合管理 SocketChannel， 再推送消息时，可以将业务加入到各个channel 对应的 NIOEventLoop 的 taskQueue 或者 scheduleTaskQueue
+                            //System.out.println("客户socketchannel hashcode=" + ch.hashCode()); //可以使用一个集合管理 SocketChannel， 再推送消息时，可以将业务加入到各个channel 对应的 NIOEventLoop 的 taskQueue 或者 scheduleTaskQueue
                             ch.pipeline().addLast(new NettyServerHandler()
-                                    , new TestInboundHandler1(), new TestInboundHandler2()
-                                    , new TestOutboundHandler1() ,new TestOutboundHandler2());
+                                    /*, new TestInboundHandler1(), new TestInboundHandler2()
+                                    , new TestOutboundHandler1() ,new TestOutboundHandler2()*/);
                         }
                     }); // 给我们的workerGroup 的 EventLoop 对应的管道设置处理器
 
